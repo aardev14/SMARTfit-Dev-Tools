@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jim's Hex File Comparator</title>
+    <title>Hex File Comparator</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Jim's Hex File Comparator</h1>
+    <h1>Hex File Comparator</h1>
 
     <div class="file-upload">
         <label for="hexFile">Original File (Hex File):</label>
@@ -20,16 +20,10 @@
     <button id="compareBtn">Compare Files</button>
 
     <div id="result">
-        <h2>Debug Section</h2>
+        <h2>Comparison Result</h2>
         <p><strong>Percentage of Matching Lines:</strong> <span id="percentage"></span>%</p>
         <p><strong>Number of Different Lines:</strong> <span id="diffCount"></span></p>
-        <p><strong>Line Numbers of Differences:</strong></p>
-        <ul id="diffLines"></ul>
 
-        <h3>Processed Hex File</h3>
-        <pre id="processedHex"></pre>
-        <h3>Processed Data Dump File</h3>
-        <pre id="processedTxt"></pre>
         <div class="processed-files">
             <div class="column">
                 <h3>Processed Hex File</h3>
