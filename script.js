@@ -46,7 +46,10 @@ function processHexFile(hexLines) {
 }
 
 function processTxtFile(txtLines) {
-    return txtLines.map(line => line.slice(6));  // Strip the first six characters (5 numbers and a space)
+    return txtLines
+        .map(line => line.slice(6))  // Strip the first six characters (5 numbers and a space)
+        .map(line => line.trim())    // Remove any extra whitespace
+        .filter(line => line.length === 32);  // Ensure only lines with exactly 32 characters are processed
 }
 
 function compareFiles(hexLines, txtLines) {
