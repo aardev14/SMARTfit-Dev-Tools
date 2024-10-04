@@ -35,6 +35,29 @@ button {
     display: none;
 }
 
+.processed-files {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    width: 48%;
+}
+
+pre {
+    font-size: 70%; /* Set font size to 70% of normal */
+    background-color: #f4f4f4;
+    padding: 10px;
+    border: 1px solid #ddd;
+    overflow: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+pre .diff {
+    color: red; /* Highlight differences in red */
+}
+
 ul {
     list-style-type: none;
     padding: 0;
