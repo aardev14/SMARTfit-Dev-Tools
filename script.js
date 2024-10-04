@@ -106,6 +106,8 @@ function displayResults(comparison, processedHexData, processedTxtData) {
     const percentage = (comparison.matching / comparison.total * 100).toFixed(2);
     document.getElementById('percentage').textContent = percentage;
     document.getElementById('diffCount').textContent = comparison.different.length;
+
+    /*
     const diffLinesList = document.getElementById('diffLines');
     diffLinesList.innerHTML = '';
     comparison.different.forEach(line => {
@@ -113,6 +115,7 @@ function displayResults(comparison, processedHexData, processedTxtData) {
         li.textContent = `Line ${line}`;
         diffLinesList.appendChild(li);
     });
+    */
 
     document.getElementById('result').style.display = 'block';
 
