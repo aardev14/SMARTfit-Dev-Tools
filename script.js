@@ -13,7 +13,7 @@ document.getElementById('compareBtn').addEventListener('click', function () {
             const processedHexData = processHexFile(hexData);
             const processedTxtData = processTxtFile(txtData);
             const comparison = compareFiles(processedHexData, processedTxtData);
-            displayResults(comparison);
+            displayResults(comparison, processedHexData, processedTxtData);
         })
         .catch(err => console.error(err));
 });
@@ -57,7 +57,7 @@ function compareFiles(hexLines, txtLines) {
     };
 }
 
-function displayResults(comparison) {
+function displayResults(comparison, processedHexData, processedTxtData) {
     const percentage = (comparison.matching / comparison.total * 100).toFixed(2);
     document.getElementById('percentage').textContent = percentage;
     document.getElementById('diffCount').textContent = comparison.different.length;
@@ -70,4 +70,11 @@ function displayResults(comparison) {
     });
 
     document.getElementById('result').style.display = 'block';
+
+    // Display both processed files
+    const processedHexSection = document.getElementById('processedHex');
+    const processedTxtSection = document.getElementById('processedTxt');
+    
+    processedHexSection.textContent = processedHexData.join('\n');
+    processedTxtSection.textContent = processedTxtData.join('\n');
 }
