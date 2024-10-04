@@ -30,8 +30,12 @@ function readFile(file) {
 function processHexFile(hexLines) {
     return hexLines
         .filter(line => line.length >= 43)  // Remove lines shorter than 43 characters
-        .map(line => {
-            const data = line.slice(9, line.length - 2);  // Ignore first 9 chars, last 2
+        .map((line, index) => {
+            console.log(`Original line ${index + 1}:`, line);
+            // Slice to get the middle part of the line and limit it to 32 characters
+            let data = line.slice(9, -2);  // Ignore first 9 chars, last 2
+            data = data.slice(0, 32);  // Ensure it's exactly 32 characters (16 sets of 2)
+            console.log(`Processed line ${index + 1}:`, data);
             return data.match(/.{1,2}/g).join(' ');  // Group every 2 characters and join with space
         });
 }
