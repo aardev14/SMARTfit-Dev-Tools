@@ -50,22 +50,23 @@ function processTxtFile(txtLines) {
 
     // Step 1: Process each line individually
     txtLines.forEach(line => {
-        // Remove non-printable characters from each line
-        let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Remove non-printable characters
+        // Clean non-printable characters from each line, but do not affect line breaks
+        let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Clean each line
+        
+        // Remove the address (first 6 characters) and split the rest by spaces
+        let hexPairs = cleanedLine.slice(6).trim().split(/\s+/);  // Remove first 6 characters and split
 
-        // Step 2: Remove the address (first 6 characters) and split the rest by spaces
-        let hexPairs = cleanedLine.slice(6).trim().split(/\s+/);  // Remove first 6 characters (address) and split
-
-        // Step 3: Join the hex pairs with spaces and push to result
+        // Join the hex pairs with spaces and push to result
         result.push(hexPairs.join(' '));
     });
 
-    // Step 4: Print the processed result for debugging
+    // Step 2: Print the processed result for debugging
     console.log('Processed Text File Result:', result);
 
-    // Step 5: Return the processed result
-    return result;
+    // Step 3: Return the result, joining lines with newlines to preserve structure
+    return result.join('\n');  // Preserve the line structure with newlines
 }
+
 
 
 function compareFiles(hexLines, txtLines) {
