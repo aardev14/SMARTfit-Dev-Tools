@@ -110,7 +110,7 @@ function displayResults(comparison, processedHexData, processedTxtData) {
     document.getElementById('result').style.display = 'block';
 
     // Determine the number of digits needed for padding
-    const totalLines = processedHexData.length;
+    const totalLines = Math.max(processedHexData.length, processedTxtData.length); // Get the largest line count
     const lineNumberDigits = totalLines.toString().length; // Calculate digits based on total lines
 
     // Function to pad line numbers with leading zeros
@@ -129,9 +129,9 @@ function displayResults(comparison, processedHexData, processedTxtData) {
             const content = comparison.different.includes(index + 1) 
                 ? `<span class="diff">${line}</span>` 
                 : line;
-            return lineNumber + ' ' + content;
+            return `<span style="color: blue">${lineNumber}</span> ${content}`;
         })
-        .join('\n');
+        .join('<br>'); // Add line breaks for each line
 
     // Display processed text data with padded line numbers
     const processedTxtSection = document.getElementById('processedTxt');
@@ -142,7 +142,8 @@ function displayResults(comparison, processedHexData, processedTxtData) {
             const content = comparison.different.includes(index + 1) 
                 ? `<span class="diff">${line}</span>` 
                 : line;
-            return lineNumber + ' ' + content;
+            return `<span style="color: blue">${lineNumber}</span> ${content}`;
         })
-        .join('\n');
+        .join('<br>'); // Add line breaks for each line
 }
+
