@@ -58,6 +58,11 @@ pre .diff {
     color: red; /* Highlight differences in red */
 }
 
+pre .line-number {
+    color: blue; /* Line numbers in blue */
+    font-weight: bold;
+}
+
 ul {
     list-style-type: none;
     padding: 0;
