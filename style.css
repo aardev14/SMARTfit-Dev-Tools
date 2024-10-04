@@ -45,7 +45,7 @@ button {
 }
 
 pre {
-    font-size: 70%; /* Set font size to 70% of normal */
+    font-size: 70%;
     background-color: #f4f4f4;
     padding: 10px;
     border: 1px solid #ddd;
@@ -55,12 +55,7 @@ pre {
 }
 
 pre .diff {
-    color: red; /* Highlight differences in red */
-}
-
-pre .line-number {
-    color: blue; /* Line numbers in blue */
-    font-weight: bold;
+    color: red;
 }
 
 ul {
