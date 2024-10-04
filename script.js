@@ -30,8 +30,12 @@ function readFile(file) {
 function processHexFile(hexLines) {
     return hexLines
         .filter(line => line.length >= 43)  // Remove lines shorter than 43 characters
-        .map(line => line.slice(9, -2).match(/.{1,2}/g).join(' '));  // Ignore first 9 chars, last 2, add spaces
+        .map(line => {
+            const data = line.slice(9, line.length - 2);  // Ignore first 9 chars, last 2
+            return data.match(/.{1,2}/g).join(' ');  // Group every 2 characters and join with space
+        });
 }
+
 
 function processTxtFile(txtLines) {
     return txtLines.map(line => line.slice(6));  // Strip the first six characters (5 numbers and a space)
