@@ -46,44 +46,27 @@ function processHexFile(hexLines) {
 }
 
 function processTxtFile(txtLines) {
-    // Step 1: Remove non-printable characters, new lines, and carriage returns
-    let entireFile = txtLines.join(' ')  // Join all lines with a space to preserve line structure
-        .replace(/[^\x20-\x7E]/g, '')   // Remove non-printable characters
-        .replace(/\n|\r/g, '');         // Remove new line and carriage return characters
-
-    // Step 2: Replace multiple spaces with a single space
-    entireFile = entireFile.replace(/\s+/g, ' ');
-
-    // Step 3: Split the file by spaces to create an array of hex pairs
-    let hexArray = entireFile.split(' ');
-
     let result = [];
-    let currentLine = [];
 
-    // Step 4: Iterate through the array and group valid 2-character hex pairs
-    hexArray.forEach(part => {
-        if (/^[A-Fa-f0-9]{2}$/.test(part)) {  // Ensure it's a valid 2-character hex string
-            currentLine.push(part);  // Add valid hex to current line
-            if (currentLine.length === 16) {  // When we have 16 hex pairs
-                result.push(currentLine.join(' '));  // Join with spaces and add to result
-                console.log('Processed Line:', currentLine.join(' '));  // Print each processed line
-                currentLine = [];  // Reset current line
-            }
-        }
+    // Step 1: Process each line individually
+    txtLines.forEach(line => {
+        // Remove non-printable characters from each line
+        let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Remove non-printable characters
+
+        // Step 2: Remove the address (first 6 characters) and split the rest by spaces
+        let hexPairs = cleanedLine.slice(6).trim().split(/\s+/);  // Remove first 6 characters (address) and split
+
+        // Step 3: Join the hex pairs with spaces and push to result
+        result.push(hexPairs.join(' '));
     });
 
-    // Step 5: If there are leftover hex pairs, push them as a final line
-    if (currentLine.length > 0) {
-        result.push(currentLine.join(' '));
-        console.log('Processed Line:', currentLine.join(' '));  // Print the final line
-    }
-
-    // Step 6: Print the final result array
+    // Step 4: Print the processed result for debugging
     console.log('Processed Text File Result:', result);
 
-    // Step 7: Return the resulting lines (each with 16 hex pairs)
+    // Step 5: Return the processed result
     return result;
 }
+
 
 function compareFiles(hexLines, txtLines) {
     const totalLines = Math.min(hexLines.length, txtLines.length);
