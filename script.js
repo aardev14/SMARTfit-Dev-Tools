@@ -104,7 +104,7 @@ function displayResults(comparison, processedHexData, processedTxtData) {
     diffLinesList.innerHTML = '';
     comparison.different.forEach(line => {
         const li = document.createElement('li');
-        li.textContent = Line ${line};
+        li.textContent = `Line ${line}`;
         diffLinesList.appendChild(li);
     });
 
