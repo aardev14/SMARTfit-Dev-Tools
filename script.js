@@ -11,7 +11,8 @@ document.getElementById('compareBtn').addEventListener('click', function () {
     Promise.all([readFile(hexFile), readFile(txtFile)])
         .then(([hexData, txtData]) => {
             const processedHexData = processHexFile(hexData);
-            const comparison = compareFiles(processedHexData, txtData);
+            const processedTxtData = processTxtFile(txtData);
+            const comparison = compareFiles(processedHexData, processedTxtData);
             displayResults(comparison);
         })
         .catch(err => console.error(err));
@@ -30,6 +31,10 @@ function processHexFile(hexLines) {
     return hexLines
         .filter(line => line.length >= 43)  // Remove lines shorter than 43 characters
         .map(line => line.slice(9, -2).match(/.{1,2}/g).join(' '));  // Ignore first 9 chars, last 2, add spaces
+}
+
+function processTxtFile(txtLines) {
+    return txtLines.map(line => line.slice(6));  // Strip the first six characters (5 numbers and a space)
 }
 
 function compareFiles(hexLines, txtLines) {
