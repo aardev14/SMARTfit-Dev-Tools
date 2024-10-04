@@ -47,9 +47,10 @@ function processHexFile(hexLines) {
 
 function processTxtFile(txtLines) {
     return txtLines
-        .map(line => line.slice(6))  // Strip the first six characters (5 numbers and a space)
-        .map(line => line.trim())    // Remove any extra whitespace
-        .filter(line => line.length === 32);  // Ensure only lines with exactly 32 characters are processed
+        .map(line => line.replace(/\s+/g, ''))  // Remove all whitespace
+        .filter(line => line.length >= 32)      // Only keep lines with at least 32 characters (16 pairs)
+        .map(line => line.slice(0, 32))         // Limit the length to 32 characters (16 pairs)
+        .map(line => line.match(/.{1,2}/g).join(' '));  // Insert a space between every 2 characters
 }
 
 function compareFiles(hexLines, txtLines) {
