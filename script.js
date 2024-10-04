@@ -11,7 +11,7 @@ document.getElementById('compareBtn').addEventListener('click', function () {
     Promise.all([readFile(hexFile), readFile(txtFile)])
         .then(([hexData, txtData]) => {
             const cleanedHexData = cleanData(hexData);
-            const cleanedTxtData = cleanData(txtData);
+            const cleanedTxtData = txtData; //cleanData(txtData);
 
             const processedHexData = processHexFile(cleanedHexData);
             const processedTxtData = processTxtFile(cleanedTxtData);
@@ -52,10 +52,10 @@ function processTxtFile(txtLines) {
     // Step 1: Iterate through each line of the file
     txtLines.forEach(line => {
         // Remove non-printable characters from each line
-        let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Clean the line
+        //let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Clean the line
 
         // Step 2: Search for all valid 2-character hex pairs
-        let hexPairs = cleanedLine.match(/\b[A-Fa-f0-9]{2}\b/g);  // Find all valid hex pairs
+        let hexPairs = line.match(/\b[A-Fa-f0-9]{2}\b/g);  // Find all valid hex pairs
         
         // Step 3: Add valid hex pairs to the queue
         if (hexPairs) {
