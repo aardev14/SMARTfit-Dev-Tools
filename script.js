@@ -31,15 +31,10 @@ function processHexFile(hexLines) {
     return hexLines
         .filter(line => line.length >= 43)  // Remove lines shorter than 43 characters
         .map((line, index) => {
-            console.log(`Original line ${index + 1}:`, line);
-            // Slice to get the middle part of the line and limit it to 32 characters
-            let data = line.slice(9, -2);  // Ignore first 9 chars, last 2
-            data = data.slice(0, 32);  // Ensure it's exactly 32 characters (16 sets of 2)
-            console.log(`Processed line ${index + 1}:`, data);
-            return data.match(/.{1,2}/g).join(' ');  // Group every 2 characters and join with space
+            const data = line.slice(9, -2);  // Ignore first 9 chars, last 2
+            return data.slice(0, 32).match(/.{1,2}/g).join(' ');  // Group every 2 characters and join with space
         });
 }
-
 
 function processTxtFile(txtLines) {
     return txtLines.map(line => line.slice(6));  // Strip the first six characters (5 numbers and a space)
@@ -79,11 +74,15 @@ function displayResults(comparison, processedHexData, processedTxtData) {
 
     document.getElementById('result').style.display = 'block';
 
-    // Display both processed files
+    // Display processed hex and txt files side by side
     const processedHexSection = document.getElementById('processedHex');
     const processedTxtSection = document.getElementById('processedTxt');
-    
-    // Join processed data with new lines for display
-    processedHexSection.textContent = processedHexData.join('\n');
-    processedTxtSection.textContent = processedTxtData.join('\n');
+
+    processedHexSection.innerHTML = processedHexData
+        .map((line, index) => (comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line))
+        .join('\n');
+
+    processedTxtSection.innerHTML = processedTxtData
+        .map((line, index) => (comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line))
+        .join('\n');
 }
