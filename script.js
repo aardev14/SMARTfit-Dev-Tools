@@ -107,25 +107,25 @@ function displayResults(comparison, processedHexData, processedTxtData) {
     document.getElementById('percentage').textContent = percentage;
     document.getElementById('diffCount').textContent = comparison.different.length;
 
-    /*
-    const diffLinesList = document.getElementById('diffLines');
-    diffLinesList.innerHTML = '';
-    comparison.different.forEach(line => {
-        const li = document.createElement('li');
-        li.textContent = `Line ${line}`;
-        diffLinesList.appendChild(li);
-    });
-    */
-
     document.getElementById('result').style.display = 'block';
 
-    // Display processed hex and txt files side by side with line numbers
-    const processedHexSection = document.getElementById('processedHex');
-    const processedTxtSection = document.getElementById('processedTxt');
+    // Determine the number of digits needed for padding
+    const totalLines = processedHexData.length;
+    const lineNumberDigits = totalLines.toString().length; // Calculate digits based on total lines
 
+    // Function to pad line numbers with leading zeros
+    function padLineNumber(num, size) {
+        let s = num.toString();
+        while (s.length < size) s = "0" + s;
+        return s;
+    }
+
+    // Display processed hex data with padded line numbers
+    const processedHexSection = document.getElementById('processedHex');
     processedHexSection.innerHTML = processedHexData
         .map((line, index) => {
-            const lineNumber = `<span class="line-number">${index + 1}</span>`;
+            const paddedLineNumber = padLineNumber(index + 1, lineNumberDigits);  // Pad line number with zeros
+            const lineNumber = `<span class="line-number">${paddedLineNumber}</span>`;
             const content = comparison.different.includes(index + 1) 
                 ? `<span class="diff">${line}</span>` 
                 : line;
@@ -133,9 +133,12 @@ function displayResults(comparison, processedHexData, processedTxtData) {
         })
         .join('\n');
 
+    // Display processed text data with padded line numbers
+    const processedTxtSection = document.getElementById('processedTxt');
     processedTxtSection.innerHTML = processedTxtData
         .map((line, index) => {
-            const lineNumber = `<span class="line-number">${index + 1}</span>`;
+            const paddedLineNumber = padLineNumber(index + 1, lineNumberDigits);  // Pad line number with zeros
+            const lineNumber = `<span class="line-number">${paddedLineNumber}</span>`;
             const content = comparison.different.includes(index + 1) 
                 ? `<span class="diff">${line}</span>` 
                 : line;
