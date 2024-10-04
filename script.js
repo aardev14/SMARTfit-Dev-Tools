@@ -46,21 +46,35 @@ function processHexFile(hexLines) {
 }
 
 function processTxtFile(txtLines) {
-    let result = [];
-    txtLines.forEach(line => {
-        // Remove leading/trailing whitespace and split by spaces
-        let parts = line.trim().split(/\s+/);
+    // Step 1: Remove non-printable characters, new lines, and carriage returns
+    let entireFile = txtLines.join('')  // Join all lines into one string
+        .replace(/[^\x20-\x7E]/g, '')   // Remove non-printable characters
+        .replace(/\n|\r/g, '');         // Remove new line and carriage return characters
 
-        // Ignore address lines (address lines usually contain fewer than 16 valid hex pairs)
-        if (parts.length >= 16) {
-            let hexPairs = parts.filter(part => /^[A-Fa-f0-9]{2}$/.test(part));
-            if (hexPairs.length === 16) {
-                result.push(hexPairs.join(' '));  // Join the 16 valid pairs with a space
+    // Step 2: Replace all spaces with commas
+    entireFile = entireFile.replace(/\s+/g, ',');
+
+    // Step 3: Split the entire file by commas to create an array of hex pairs
+    let hexArray = entireFile.split(',');
+
+    let result = [];
+    let currentLine = [];
+
+    // Step 4: Iterate through the array and group valid 2-character hex pairs
+    hexArray.forEach(part => {
+        if (/^[A-Fa-f0-9]{2}$/.test(part)) {  // Ensure it's a valid 2-character hex string
+            currentLine.push(part);  // Add valid hex to current line
+            if (currentLine.length === 16) {  // When we have 16 hex pairs
+                result.push(currentLine.join(' '));  // Join with spaces and add to result
+                currentLine = [];  // Reset current line
             }
         }
     });
+
+    // Step 5: Return the resulting lines (each with 16 hex pairs)
     return result;
 }
+
 
 function compareFiles(hexLines, txtLines) {
     const totalLines = Math.min(hexLines.length, txtLines.length);
