@@ -46,26 +46,39 @@ function processHexFile(hexLines) {
 }
 
 function processTxtFile(txtLines) {
+    let queue = [];
     let result = [];
 
-    // Step 1: Process each line individually
+    // Step 1: Iterate through each line of the file
     txtLines.forEach(line => {
-        // Clean non-printable characters from each line, but do not affect line breaks
-        let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Clean each line
-        
-        // Remove the address (first 6 characters) and split the rest by spaces
-        let hexPairs = cleanedLine.slice(6).trim().split(/\s+/);  // Remove first 6 characters and split
+        // Remove non-printable characters from each line
+        let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Clean the line
 
-        // Join the hex pairs with spaces and push to result
-        result.push(hexPairs.join(' '));
+        // Step 2: Search for all valid 2-character hex pairs
+        let hexPairs = cleanedLine.match(/\b[A-Fa-f0-9]{2}\b/g);  // Find all valid hex pairs
+        
+        // Step 3: Add valid hex pairs to the queue
+        if (hexPairs) {
+            hexPairs.forEach(pair => {
+                if (pair.length === 2) {  // Only add valid 2-character hex pairs
+                    queue.push(pair);
+                }
+            });
+        }
     });
 
-    // Step 2: Print the processed result for debugging
-    console.log('Processed Text File Result:', result);
+    // Step 4: Dequeue 16 hex pairs at a time and create formatted lines
+    while (queue.length > 0) {
+        let line = queue.splice(0, 16).join(' ');  // Dequeue 16 pairs and join with a space
+        result.push(line);  // Add formatted line to the result
+        console.log('Processed Line:', line);  // Print each processed line for debugging
+    }
 
-    // Step 3: Return the result, joining lines with newlines to preserve structure
-    return result.join('\n');  // Preserve the line structure with newlines
+    // Step 5: Print and return the final result
+    console.log('Processed Text File Result:', result);
+    return result;
 }
+
 
 
 
