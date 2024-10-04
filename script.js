@@ -97,6 +97,14 @@ function compareFiles(hexLines, txtLines) {
 }
 
 function displayResults(comparison, processedHexData, processedTxtData) {
+    const totalLines = Math.max(processedHexData.length, processedTxtData.length);
+    const numberOfDigits = totalLines.toString().length;  // Calculate the number of digits for the largest line number
+
+    // Function to pad numbers with leading zeros
+    function padLineNumber(number, digits) {
+        return String(number).padStart(digits, '0');
+    }
+
     const percentage = (comparison.matching / comparison.total * 100).toFixed(2);
     document.getElementById('percentage').textContent = percentage;
     document.getElementById('diffCount').textContent = comparison.different.length;
@@ -104,19 +112,19 @@ function displayResults(comparison, processedHexData, processedTxtData) {
     diffLinesList.innerHTML = '';
     comparison.different.forEach(line => {
         const li = document.createElement('li');
-        li.textContent = `Line ${line}`;
+        li.textContent = `Line ${padLineNumber(line, numberOfDigits)}`;  // Padded line number
         diffLinesList.appendChild(li);
     });
 
     document.getElementById('result').style.display = 'block';
 
-    // Display processed hex and txt files side by side with line numbers
+    // Display processed hex and txt files side by side with padded line numbers
     const processedHexSection = document.getElementById('processedHex');
     const processedTxtSection = document.getElementById('processedTxt');
 
     processedHexSection.innerHTML = processedHexData
         .map((line, index) => {
-            const lineNumber = `<span class="line-number">${index + 1}</span> `;
+            const lineNumber = `<span class="line-number">${padLineNumber(index + 1, numberOfDigits)}</span> `;
             const content = comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line;
             return lineNumber + content;
         })
@@ -124,9 +132,10 @@ function displayResults(comparison, processedHexData, processedTxtData) {
 
     processedTxtSection.innerHTML = processedTxtData
         .map((line, index) => {
-            const lineNumber = `<span class="line-number">${index + 1}</span> `;
+            const lineNumber = `<span class="line-number">${padLineNumber(index + 1, numberOfDigits)}</span> `;
             const content = comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line;
             return lineNumber + content;
         })
         .join('\n');
 }
+
