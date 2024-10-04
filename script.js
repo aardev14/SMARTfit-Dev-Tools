@@ -47,10 +47,12 @@ function processHexFile(hexLines) {
 
 function processTxtFile(txtLines) {
     return txtLines
-        .map(line => line.replace(/\s+/g, ''))  // Remove all whitespace
-        .filter(line => line.length >= 32)      // Only keep lines with at least 32 characters (16 pairs)
-        .map(line => line.slice(0, 32))         // Limit the length to 32 characters (16 pairs)
-        .map(line => line.match(/.{1,2}/g).join(' '));  // Insert a space between every 2 characters
+        .map(line => line.trim())  // Remove any leading/trailing whitespace
+        .map(line => line.split(/\s+/))  // Split the line by one or more spaces
+        .filter(parts => parts.length >= 16)  // Keep only lines with at least 16 elements
+        .map(parts => parts.filter(part => /^[A-Fa-f0-9]{2}$/.test(part)))  // Keep only 2-character hex strings
+        .filter(validParts => validParts.length === 16)  // Keep lines with exactly 16 valid parts
+        .map(validParts => validParts.join(' '));  // Join the 16 parts with a space
 }
 
 function compareFiles(hexLines, txtLines) {
