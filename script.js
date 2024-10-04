@@ -46,13 +46,20 @@ function processHexFile(hexLines) {
 }
 
 function processTxtFile(txtLines) {
-    return txtLines
-        .map(line => line.trim())  // Remove any leading/trailing whitespace
-        .map(line => line.split(/\s+/))  // Split the line by one or more spaces
-        .filter(parts => parts.length >= 16)  // Keep only lines with at least 16 elements
-        .map(parts => parts.filter(part => /^[A-Fa-f0-9]{2}$/.test(part)))  // Keep only 2-character hex strings
-        .filter(validParts => validParts.length === 16)  // Keep lines with exactly 16 valid parts
-        .map(validParts => validParts.join(' '));  // Join the 16 parts with a space
+    let result = [];
+    txtLines.forEach(line => {
+        // Remove leading/trailing whitespace and split by spaces
+        let parts = line.trim().split(/\s+/);
+
+        // Ignore address lines (address lines usually contain fewer than 16 valid hex pairs)
+        if (parts.length >= 16) {
+            let hexPairs = parts.filter(part => /^[A-Fa-f0-9]{2}$/.test(part));
+            if (hexPairs.length === 16) {
+                result.push(hexPairs.join(' '));  // Join the 16 valid pairs with a space
+            }
+        }
+    });
+    return result;
 }
 
 function compareFiles(hexLines, txtLines) {
