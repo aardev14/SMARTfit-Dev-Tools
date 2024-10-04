@@ -46,21 +46,18 @@ function processHexFile(hexLines) {
 }
 
 function processTxtFile(txtLines) {
-    // Step 1: Remove non-printable characters, new lines, and carriage returns
+    // Step 1: Join all lines and replace non-printable characters
     let entireFile = txtLines.join('')  // Join all lines into one string
         .replace(/[^\x20-\x7E]/g, '')   // Remove non-printable characters
         .replace(/\n|\r/g, '');         // Remove new line and carriage return characters
 
-    // Step 2: Replace all spaces with commas
-    entireFile = entireFile.replace(/\s+/g, ',');
-
-    // Step 3: Split the entire file by commas to create an array of hex pairs
-    let hexArray = entireFile.split(',');
+    // Step 2: Split the string by spaces to get all the hex values
+    let hexArray = entireFile.split(/\s+/);  // Split by any whitespace
 
     let result = [];
     let currentLine = [];
 
-    // Step 4: Iterate through the array and group valid 2-character hex pairs
+    // Step 3: Iterate through the array and group valid 2-character hex pairs
     hexArray.forEach(part => {
         if (/^[A-Fa-f0-9]{2}$/.test(part)) {  // Ensure it's a valid 2-character hex string
             currentLine.push(part);  // Add valid hex to current line
@@ -71,7 +68,15 @@ function processTxtFile(txtLines) {
         }
     });
 
-    // Step 5: Return the resulting lines (each with 16 hex pairs)
+    // Step 4: If there are leftover hex pairs, push them as a final line
+    if (currentLine.length > 0) {
+        result.push(currentLine.join(' '));
+    }
+
+    // Step 5: Print the resulting lines (each with 16 hex pairs)
+    console.log('Processed Text File Result:', result);
+
+    // Step 6: Return the result
     return result;
 }
 
