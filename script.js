@@ -75,6 +75,7 @@ function displayResults(comparison, processedHexData, processedTxtData) {
     const processedHexSection = document.getElementById('processedHex');
     const processedTxtSection = document.getElementById('processedTxt');
     
+    // Join processed data with new lines for display
     processedHexSection.textContent = processedHexData.join('\n');
     processedTxtSection.textContent = processedTxtData.join('\n');
 }
