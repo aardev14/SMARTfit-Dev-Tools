@@ -10,8 +10,12 @@ document.getElementById('compareBtn').addEventListener('click', function () {
     // Read both files and compare
     Promise.all([readFile(hexFile), readFile(txtFile)])
         .then(([hexData, txtData]) => {
-            const processedHexData = processHexFile(hexData);
-            const processedTxtData = processTxtFile(txtData);
+            const cleanedHexData = cleanData(hexData);
+            const cleanedTxtData = cleanData(txtData);
+
+            const processedHexData = processHexFile(cleanedHexData);
+            const processedTxtData = processTxtFile(cleanedTxtData);
+
             const comparison = compareFiles(processedHexData, processedTxtData);
             displayResults(comparison, processedHexData, processedTxtData);
         })
@@ -25,6 +29,11 @@ function readFile(file) {
         reader.onerror = reject;
         reader.readAsText(file);
     });
+}
+
+// Function to clean non-printable characters from data
+function cleanData(lines) {
+    return lines.map(line => line.replace(/[^\x20-\x7E]/g, ''));  // Remove non-printable characters
 }
 
 function processHexFile(hexLines) {
@@ -74,15 +83,23 @@ function displayResults(comparison, processedHexData, processedTxtData) {
 
     document.getElementById('result').style.display = 'block';
 
-    // Display processed hex and txt files side by side
+    // Display processed hex and txt files side by side with line numbers
     const processedHexSection = document.getElementById('processedHex');
     const processedTxtSection = document.getElementById('processedTxt');
 
     processedHexSection.innerHTML = processedHexData
-        .map((line, index) => (comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line))
+        .map((line, index) => {
+            const lineNumber = `<span class="line-number">${index + 1}</span> `;
+            const content = comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line;
+            return lineNumber + content;
+        })
         .join('\n');
 
     processedTxtSection.innerHTML = processedTxtData
-        .map((line, index) => (comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line))
+        .map((line, index) => {
+            const lineNumber = `<span class="line-number">${index + 1}</span> `;
+            const content = comparison.different.includes(index + 1) ? `<span class="diff">${line}</span>` : line;
+            return lineNumber + content;
+        })
         .join('\n');
 }
