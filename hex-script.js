@@ -69,8 +69,12 @@ function processFile(content) {
 }
 
 function displayResults(expected, actual) {
+    const resultDiv = document.getElementById('result');
     const expectedOutput = document.getElementById('expected-output');
     const actualOutput = document.getElementById('actual-output');
+
+    // Ensure the result div is visible
+    resultDiv.style.display = 'block';
 
     // Clear previous output
     expectedOutput.innerHTML = '';
