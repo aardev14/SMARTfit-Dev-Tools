@@ -104,3 +104,11 @@ nav {
     margin: 10px 20px;
     text-align: left;
 }
+
+.match {
+    color: black;
+}
+
+.mismatch {
+    color: red;
+}
