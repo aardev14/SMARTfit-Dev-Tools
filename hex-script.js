@@ -80,15 +80,17 @@ function displayResults(expected, actual) {
         const actualLine = actual[index];
         const matchClass = expectedLine === actualLine ? 'match' : 'mismatch';
 
+        // Calculate and format line number in hexadecimal
+        const hexLineNumber = (index * 0x10).toString(16).toUpperCase().padStart(5, '0');
+        const lineNumberHTML = `<span class="line-number" style="color: blue;">${hexLineNumber}</span>`;
+
         // Create elements for each line in Expected and Actual output columns
         const expectedDiv = document.createElement('div');
-        expectedDiv.textContent = expectedLine;
-        expectedDiv.className = matchClass;
+        expectedDiv.innerHTML = `${lineNumberHTML} <span class="${matchClass}">${expectedLine}</span>`;
         expectedOutput.appendChild(expectedDiv);
 
         const actualDiv = document.createElement('div');
-        actualDiv.textContent = actualLine;
-        actualDiv.className = matchClass;
+        actualDiv.innerHTML = `${lineNumberHTML} <span class="${matchClass}">${actualLine}</span>`;
         actualOutput.appendChild(actualDiv);
     });
 }
