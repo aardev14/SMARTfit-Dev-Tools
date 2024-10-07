@@ -20,15 +20,27 @@
         This is a SMARTfit tool designed to compare what is expected to be written to flash with what is actually written to flash. A single .txt file is processed to identify any differences in addresses.
     </p>
 
-    <input type="file" id="fileInput">
+    <div class="file-upload">
+        <label for="fileInput">Select File (Text File):</label>
+        <input type="file" id="fileInput">
+    </div>
+
     <button id="processButton">Process File</button>
-    <div id="debug-section">
+
+    <div id="result">
         <h2>Debug Output</h2>
-        <div class="output-columns">
-            <div id="expected-output" class="output-column"></div>
-            <div id="actual-output" class="output-column"></div>
+        <div class="processed-files">
+            <div class="column">
+                <h3>Expected Output</h3>
+                <pre id="expected-output"></pre>
+            </div>
+            <div class="column">
+                <h3>Actual Output</h3>
+                <pre id="actual-output"></pre>
+            </div>
         </div>
     </div>
+
     <script src="hex-script.js"></script>
 </body>
 </html>
