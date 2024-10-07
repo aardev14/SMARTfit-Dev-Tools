@@ -15,11 +15,8 @@ document.getElementById('processButton').addEventListener('click', () => {
 });
 
 function processFile(content) {
-    // Remove non-printable characters and replace spaces with commas
-    let cleanedContent = content.replace(/[^ -~]/g, '').replace(/\s+/g, ',');
-
-    // Split content by commas and queue hex pairs
-    const allPairs = cleanedContent.match(/.{1,2}/g) || [];
+    // Extract only two-character hex pairs (e.g., "0F", "A1") from the content
+    const allPairs = content.match(/\b[0-9A-Fa-f]{2}\b/g) || [];
 
     // Print the count of all pairs to the console
     console.log("Total hex pairs:", allPairs.length);
