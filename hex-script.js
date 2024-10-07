@@ -15,6 +15,10 @@ document.getElementById('processButton').addEventListener('click', () => {
 });
 
 function processFile(content) {
+
+    //Clean the file by removing any messages from communication that may have snuck through.
+    content = content.replace(/<[^>]*>/g, '');
+    
     // Extract only two-character hex pairs (e.g., "0F", "A1") from the content
     const allPairs = content.match(/\b[0-9A-Fa-f]{2}\b/g) || [];
 
