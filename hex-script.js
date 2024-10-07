@@ -1,4 +1,3 @@
-
 document.getElementById('processButton').addEventListener('click', () => {
     const fileInput = document.getElementById('fileInput');
     if (fileInput.files.length === 0) {
@@ -15,8 +14,7 @@ document.getElementById('processButton').addEventListener('click', () => {
 });
 
 function processFile(content) {
-
-    //Clean the file by removing any messages from communication that may have snuck through.
+    // Clean the file by removing any messages from communication that may have snuck through.
     content = content.replace(/<[^>]*>/g, '');
     
     // Extract only two-character hex pairs (e.g., "0F", "A1") from the content
@@ -26,31 +24,25 @@ function processFile(content) {
     console.log("Total hex pairs:", allPairs.length);
 
     // Initialize variables and queues
-    let hexPairCounter = 0;
     const expectedPairStrings = [];
     const actualPairStrings = [];
-    let expectedPairs = [];
-    let actualPairs = [];
     
     // Process AllPairs queue
     while (allPairs.length > 0) {
+        let expectedPairs = [];
+        let actualPairs = [];
+
         // Dequeue 256 for ExpectedPairs
-        expectedPairs = [];
         for (let i = 0; i < 256 && allPairs.length > 0; i++) {
             expectedPairs.push(allPairs.shift());
-            hexPairCounter++;
         }
         const pair256 = expectedPairs[expectedPairs.length - 1];
-        hexPairCounter = 0;
 
         // Dequeue 255 for ActualPairs and add pair256
-        actualPairs = [];
         for (let i = 0; i < 255 && allPairs.length > 0; i++) {
             actualPairs.push(allPairs.shift());
-            hexPairCounter++;
         }
         actualPairs.push(pair256); // Append the 256th pair
-        hexPairCounter = 0;
 
         // Combine pairs into strings of 16 for Expected and Actual output
         for (let i = 0; i < 256; i += 16) {
@@ -59,16 +51,38 @@ function processFile(content) {
         }
     }
     
-    // Print the lines and their count to the console to debug.
-    console.log("Total expected lines:", expectedPairStrings.length);
-    console.log("Total actual lines:", actualPairStrings.length);
-    console.log("Expected Pair Strings:", expectedPairStrings);
-    console.log("Actual Pair Strings:", actualPairStrings);
+    // Compare the processed lines
+    const comparison = comparePairs(expectedPairStrings, actualPairStrings);
 
-    displayResults(expectedPairStrings, actualPairStrings);
+    // Pass the comparison and processed data to displayResults
+    displayResults(comparison, expectedPairStrings, actualPairStrings);
 }
 
-function displayResults(expected, actual) {
+function comparePairs(expected, actual) {
+    const totalLines = Math.min(expected.length, actual.length);
+    let matchingLines = 0;
+    let diffLines = [];
+
+    for (let i = 0; i < totalLines; i++) {
+        if (expected[i].trim() === actual[i].trim()) {
+            matchingLines++;
+        } else {
+            diffLines.push(i + 1);  // Line numbers start from 1
+        }
+    }
+
+    return {
+        total: totalLines,
+        matching: matchingLines,
+        different: diffLines
+    };
+}
+
+function displayResults(comparison, expected, actual) {
+    const percentage = (comparison.matching / comparison.total * 100).toFixed(2);
+    document.getElementById('percentage').textContent = percentage;
+    document.getElementById('diffCount').textContent = comparison.different.length;
+
     const resultDiv = document.getElementById('result');
     const expectedOutput = document.getElementById('expected-output');
     const actualOutput = document.getElementById('actual-output');
@@ -82,7 +96,7 @@ function displayResults(expected, actual) {
 
     expected.forEach((expectedLine, index) => {
         const actualLine = actual[index];
-        const matchClass = expectedLine === actualLine ? 'match' : 'mismatch';
+        const matchClass = comparison.different.includes(index + 1) ? 'mismatch' : 'match';
 
         // Calculate and format line number in hexadecimal
         const hexLineNumber = (index * 0x10).toString(16).toUpperCase().padStart(5, '0');
