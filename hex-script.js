@@ -21,6 +21,9 @@ function processFile(content) {
     // Split content by commas and queue hex pairs
     const allPairs = cleanedContent.match(/.{1,2}/g) || [];
 
+    // Print the count of all pairs to the console
+    console.log("Total hex pairs:", allPairs.length);
+
     // Initialize variables and queues
     let hexPairCounter = 0;
     const expectedPairStrings = [];
@@ -54,6 +57,9 @@ function processFile(content) {
             actualPairStrings.push(actualPairs.slice(i, i + 16).join(' '));
         }
     }
+    // Print the count of all lines to the console
+    console.log("Total expected lines:", expectedPairStrings.length);
+    console.log("Total actual lines:", actualPairStrings.length);
 
     displayResults(expectedPairStrings, actualPairStrings);
 }
