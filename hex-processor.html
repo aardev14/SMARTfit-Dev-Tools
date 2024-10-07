@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Flash - File Processor</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Hide #result initially */
+        #result {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <nav>
@@ -32,11 +38,11 @@
         <div class="processed-files">
             <div class="column">
                 <h3>Expected Output</h3>
-                <pre id="expected-output"></pre>
+                <div id="expected-output"></div> <!-- Changed from <pre> to <div> -->
             </div>
             <div class="column">
                 <h3>Actual Output</h3>
-                <pre id="actual-output"></pre>
+                <div id="actual-output"></div> <!-- Changed from <pre> to <div> -->
             </div>
         </div>
     </div>
