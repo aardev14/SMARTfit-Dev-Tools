@@ -57,9 +57,12 @@ function processFile(content) {
             actualPairStrings.push(actualPairs.slice(i, i + 16).join(' '));
         }
     }
-    // Print the count of all lines to the console
+    
+    // Print the lines and their count to the console to debug.
     console.log("Total expected lines:", expectedPairStrings.length);
     console.log("Total actual lines:", actualPairStrings.length);
+    console.log("Expected Pair Strings:", expectedPairStrings);
+    console.log("Actual Pair Strings:", actualPairStrings);
 
     displayResults(expectedPairStrings, actualPairStrings);
 }
