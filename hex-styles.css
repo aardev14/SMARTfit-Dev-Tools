@@ -15,7 +15,7 @@ h1 {
 
 .output-columns {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
 }
 
 .output-column {
@@ -70,6 +70,6 @@ nav {
     font-size: 1em;
     color: #333;
     margin: 10px 20px;
-    text-align: center;
+    text-align: left;
 }
 
