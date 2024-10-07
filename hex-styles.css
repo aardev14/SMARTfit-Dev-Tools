@@ -35,3 +35,41 @@ h1 {
 .mismatch {
     color: red;
 }
+
+/* Navigation bar styling */
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #333;
+    color: white;
+}
+
+.nav-logo {
+    height: 50px;
+    width: auto;
+}
+
+.nav-links {
+    display: flex;
+    gap: 15px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-size: 1em;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+.description {
+    font-size: 1em;
+    color: #333;
+    margin: 10px 20px;
+    text-align: center;
+}
+
