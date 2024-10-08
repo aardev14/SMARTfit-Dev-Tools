@@ -17,14 +17,14 @@
 
     <h1>File Comparator: EEPROM</h1>
     <p class="description">
-        This is a SMARTfit tool designed to compare a .hex file intended for programming with the contents of an EEPROM .txt dump file. The two files are processed to identify any differences in addresses.
+        This is a SMARTfit tool designed to compare an original .hex file intended for programming with the contents of an EEPROM .txt data dump file. The two files are processed to identify any differences in addresses.
     </p>
 
     <div class="file-upload">
         <label for="hexFile">Original File (Hex File):</label>
         <input type="file" id="hexFile" accept=".hex">
 
-        <label for="txtFile">Data Dump File (Text File):</label>
+        <label for="txtFile">EEPROM Data Dump File (Text File):</label>
         <input type="file" id="txtFile" accept=".txt">
     </div>
 
@@ -37,11 +37,11 @@
         
         <div class="processed-files">
             <div class="column">
-                <h3>Processed Hex File</h3>
+                <h3>Processed Original Hex File</h3>
                 <pre id="processedHex"></pre>
             </div>
             <div class="column">
-                <h3>Processed Data Dump File</h3>
+                <h3>Processed EEPROM Data Dump File</h3>
                 <pre id="processedTxt"></pre>
             </div>
         </div>
