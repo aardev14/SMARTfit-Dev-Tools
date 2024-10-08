@@ -7,6 +7,9 @@ document.getElementById('compareBtn').addEventListener('click', function () {
         return;
     }
 
+    // Show the loading spinner
+    toggleSpinner(true);
+
     // Read both files and compare
     Promise.all([readFile(hexFile), readFile(txtFile)])
         .then(([hexData, txtData]) => {
@@ -19,8 +22,17 @@ document.getElementById('compareBtn').addEventListener('click', function () {
             const comparison = compareFiles(processedHexData, processedTxtData);
             displayResults(comparison, processedHexData, processedTxtData);
         })
-        .catch(err => console.error(err));
+        .catch(err => console.error(err))
+        .finally(() => {
+            // Hide the loading spinner after processing
+            toggleSpinner(false);
+        });
 });
+
+function toggleSpinner(show) {
+    const spinner = document.getElementById('loadingSpinner');
+    spinner.style.display = show ? 'block' : 'none';
+}
 
 function readFile(file) {
     return new Promise((resolve, reject) => {
@@ -51,16 +63,11 @@ function processTxtFile(txtLines) {
 
     // Step 1: Iterate through each line of the file
     txtLines.forEach(line => {
-        // Remove non-printable characters from each line
-        //let cleanedLine = line.replace(/[^\x20-\x7E]/g, ''); // Clean the line
-
-        // Step 2: Search for all valid 2-character hex pairs
         let hexPairs = line.match(/\b[A-Fa-f0-9]{2}\b/g);  // Find all valid hex pairs
         
-        // Step 3: Add valid hex pairs to the queue
         if (hexPairs) {
             hexPairs.forEach(pair => {
-                if (pair.length === 2) {  // Only add valid 2-character hex pairs
+                if (pair.length === 2) {
                     queue.push(pair);
                 }
             });
@@ -70,17 +77,13 @@ function processTxtFile(txtLines) {
     // Step 4: Dequeue 16 hex pairs at a time and create formatted lines
     while (queue.length > 0) {
         let line = queue.splice(0, 16).join(' ');  // Dequeue 16 pairs and join with a space
-        result.push(line);  // Add formatted line to the result
+        result.push(line);
         console.log('Processed Line:', line);  // Print each processed line for debugging
     }
 
-    // Step 5: Print and return the final result
     console.log('Processed Text File Result:', result);
     return result;
 }
-
-
-
 
 function compareFiles(hexLines, txtLines) {
     const totalLines = Math.min(hexLines.length, txtLines.length);
@@ -109,30 +112,27 @@ function displayResults(comparison, processedHexData, processedTxtData) {
 
     document.getElementById('result').style.display = 'block';
 
-    // Display processed hex data with formatted line numbers
     const processedHexSection = document.getElementById('processedHex');
     processedHexSection.innerHTML = processedHexData
         .map((line, index) => {
-            const hexLineNumber = (index * 0x10).toString(16).toUpperCase().padStart(5, '0'); // Format line number in hex
+            const hexLineNumber = (index * 0x10).toString(16).toUpperCase().padStart(5, '0');
             const lineNumber = `<span class="line-number">${hexLineNumber}</span>`;
             const content = comparison.different.includes(index + 1) 
                 ? `<span class="diff">${line}</span>` 
                 : line;
             return `<span style="color: blue">${lineNumber}</span> ${content}`;
         })
-        .join('<br>'); // Add line breaks for each line
+        .join('<br>');
 
-    // Display processed text data with formatted line numbers
     const processedTxtSection = document.getElementById('processedTxt');
     processedTxtSection.innerHTML = processedTxtData
         .map((line, index) => {
-            const hexLineNumber = (index * 0x10).toString(16).toUpperCase().padStart(5, '0'); // Format line number in hex
+            const hexLineNumber = (index * 0x10).toString(16).toUpperCase().padStart(5, '0');
             const lineNumber = `<span class="line-number">${hexLineNumber}</span>`;
             const content = comparison.different.includes(index + 1) 
                 ? `<span class="diff">${line}</span>` 
                 : line;
             return `<span style="color: blue">${lineNumber}</span> ${content}`;
         })
-        .join('<br>'); // Add line breaks for each line
+        .join('<br>');
 }
-
