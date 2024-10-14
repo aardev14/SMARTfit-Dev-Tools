@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>File Comparator: EEPROM</title>
+    <title>File Comparator: Flash</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -17,16 +17,16 @@
         </div>
     </nav>
 
-    <h1>File Comparator: EEPROM</h1>
+    <h1>File Comparator: Flash</h1>
     <p class="description">
-        This is a SMARTfit tool designed to compare two .hex files and identify any differences in their addresses.
+        This is a SMARTfit tool designed to compare what is expected to be written to flash with what is actually read from flash. he two files are processed to identify any differences in addresses.
     </p>
 
     <div class="file-upload">
-        <label for="hexFile1">First Hex File:</label>
+        <label for="hexFile1">Original File (Hex File):</label>
         <input type="file" id="hexFile1" accept=".hex">
 
-        <label for="hexFile2">Second Hex File:</label>
+        <label for="hexFile2">Flash File (Hex File):</label>
         <input type="file" id="hexFile2" accept=".hex">
     </div>
 
@@ -43,16 +43,16 @@
         
         <div class="processed-files">
             <div class="column">
-                <h3>Processed First Hex File</h3>
+                <h3>Processed Original File</h3>
                 <pre id="processedHex1"></pre>
             </div>
             <div class="column">
-                <h3>Processed Second Hex File</h3>
+                <h3>Processed Flash File</h3>
                 <pre id="processedHex2"></pre>
             </div>
         </div>
     </div>
 
-    <script src="hex_file_comparison.js"></script>
+    <script src="flash-script.js"></script>
 </body>
 </html>
